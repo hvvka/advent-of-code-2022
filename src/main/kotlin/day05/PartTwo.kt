@@ -4,23 +4,41 @@ import FileReader
 
 fun main() {
     val input = FileReader().readFile("day05/input.txt")
+    val instructions = input.split("\n\n")
 
-    val fullyContainedAssignmentPairs = input.split("\n").map { line ->
-        val firstElfSection = line.split(",")[0]
-        val secondElfSection = line.split(",")[1]
-        doSectionsOverlap(firstElfSection, secondElfSection)
-    }.count { result -> result }
+    val stacks = mutableListOf<ArrayDeque<Char>>(
+            ArrayDeque(), ArrayDeque(), ArrayDeque(),
+            ArrayDeque(), ArrayDeque(), ArrayDeque(),
+            ArrayDeque(), ArrayDeque(), ArrayDeque())
 
-    println(fullyContainedAssignmentPairs) // 931
+    instructions[0].split("\n").map { line ->
+        line.mapIndexed { index, c ->
+            if (c == '[') {
+                stacks[index / 4].addLast(line[index + 1])
+            }
+        }
+    }
+
+    val moveInstructions = instructions[1].split("\n").map { line ->
+        val moveInstructionNumbers = Regex("\\d+").findAll(line).map { it.value.toInt() }.toList()
+        MoveInstruction(moveInstructionNumbers[0], moveInstructionNumbers[1], moveInstructionNumbers[2])
+    }
+
+    val cratesSimulator = CratesSimulator(stacks)
+    cratesSimulator.simulateCrateMover9001(moveInstructions)
+
+    println(cratesSimulator.findTopCrates()) // CNSCZWLVT
 }
 
-private fun doSectionsOverlap(firstElfSection: String, secondElfSection: String): Boolean {
-    val firstElfSectionLow = firstElfSection.split("-")[0].toInt()
-    val firstElfSectionHigh = firstElfSection.split("-")[1].toInt()
-    val secondElfSectionLow = secondElfSection.split("-")[0].toInt()
-    val secondElfSectionHigh = secondElfSection.split("-")[1].toInt()
+fun CratesSimulator.simulateCrateMover9001(moveInstructions: List<MoveInstruction>) {
+    for (moveInstruction in moveInstructions) {
+        stacks[moveInstruction.fromStack - 1].subList(0, moveInstruction.cratesToMove).reversed().forEach { crate ->
+            stacks[moveInstruction.toStack - 1].addFirst(crate)
+        }
 
-    return if (firstElfSectionHigh < secondElfSectionLow) {
-        false
-    } else secondElfSectionHigh >= firstElfSectionLow
+        var repetitions = moveInstruction.cratesToMove
+        while (repetitions-- > 0) {
+            stacks[moveInstruction.fromStack - 1].removeFirst()
+        }
+    }
 }

@@ -14,7 +14,7 @@ fun main() {
     println(maxCalorieSum) // 64929
 }
 
-data class Elf(val foodCalories: List<Int>) {
+data class Elf(private val foodCalories: List<Int>) {
 
     fun calculateCalorieSum(): Int {
         return foodCalories.sum()

@@ -25,16 +25,16 @@ fun main() {
     }
 
     val cratesSimulator = CratesSimulator(stacks)
-    cratesSimulator.simulate(moveInstructions)
+    cratesSimulator.simulateCrateMover9000(moveInstructions)
 
     println(cratesSimulator.findTopCrates()) // CVCWCRTVQ
 }
 
 data class MoveInstruction(val cratesToMove: Int, val fromStack: Int, val toStack: Int)
 
-class CratesSimulator(private val stacks: List<ArrayDeque<Char>>) {
+class CratesSimulator(internal val stacks: List<ArrayDeque<Char>>) {
 
-    fun simulate(moveInstructions: List<MoveInstruction>) {
+    fun simulateCrateMover9000(moveInstructions: List<MoveInstruction>) {
         for (moveInstruction in moveInstructions) {
             var repetitions = moveInstruction.cratesToMove
             while (repetitions-- > 0) {
