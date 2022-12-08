@@ -9,7 +9,7 @@ fun main() {
         val firstElfSection = line.split(",")[0]
         val secondElfSection = line.split(",")[1]
         doSectionsOverlap(firstElfSection, secondElfSection)
-    }.count { result -> result }
+    }.count { it }
 
     println(fullyContainedAssignmentPairs) // 931
 }
@@ -22,5 +22,7 @@ private fun doSectionsOverlap(firstElfSection: String, secondElfSection: String)
 
     return if (firstElfSectionHigh < secondElfSectionLow) {
         false
-    } else secondElfSectionHigh >= firstElfSectionLow
+    } else {
+        secondElfSectionHigh >= firstElfSectionLow
+    }
 }

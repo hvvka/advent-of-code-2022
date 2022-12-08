@@ -1,7 +1,6 @@
 package day04
 
 import FileReader
-import java.lang.IllegalArgumentException
 
 fun main() {
     val input = FileReader().readFile("day04/input.txt")
@@ -10,7 +9,7 @@ fun main() {
         val firstElfSection = line.split(",")[0]
         val secondElfSection = line.split(",")[1]
         doesOneFullyContainsOther(firstElfSection, secondElfSection)
-    }.count { result -> result }
+    }.count { it }
 
     println(fullyContainedAssignmentPairs) // 550
 }
