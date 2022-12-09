@@ -36,12 +36,13 @@ fun main() {
     }
 
     calculateNodeSizes(treeRoot)
+    println(treeRoot)
 
-    val result = sumSmallDirectorySizes(treeRoot)
+    val result = findSmallestDirectoryToRemove(treeRoot)
     println(result) // 1367870
 }
 
-private fun calculateNodeSizes(treeRoot: TreeNode<String>) {
+fun calculateNodeSizes(treeRoot: TreeNode<String>) {
     treeRoot.children.forEach { node ->
         if (node.children.isNotEmpty()) {
             calculateNodeSizes(node)
@@ -50,14 +51,13 @@ private fun calculateNodeSizes(treeRoot: TreeNode<String>) {
     }
 }
 
-
-private fun sumSmallDirectorySizes(treeRoot: TreeNode<String>): Int {
+private fun findSmallestDirectoryToRemove(treeRoot: TreeNode<String>): Int {
     val nodes = mutableListOf<TreeNode<String>>()
     traverseSubTree(treeRoot, nodes)
     return nodes.filter { it.size <= 100000 }.sumOf { it.size }
 }
 
-private fun traverseSubTree(node: TreeNode<String>, nodes: MutableList<TreeNode<String>>) {
+fun traverseSubTree(node: TreeNode<String>, nodes: MutableList<TreeNode<String>>) {
     node.children.map { child ->
         if (child.children.isNotEmpty()) {
             nodes.add(child)
